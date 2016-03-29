@@ -32,6 +32,8 @@
                     if (response.success) {
                         // Move to thank you page
                         alert('thank you');
+
+                        window.location = "/home/form";
                     }
                 },
                 error: function (response) {

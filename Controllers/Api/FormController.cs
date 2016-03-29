@@ -7,6 +7,7 @@ using System.Web.Http;
 
 using MVCSample.Models;
 using System.Web.Mvc;
+using MVCSample.Models.Context;
 
 namespace MVCSample.Controllers.Api
 {
@@ -23,6 +24,33 @@ namespace MVCSample.Controllers.Api
             if (ModelState.IsValid)
             {
                 // process submitted form data
+                Lead lead = new Lead()
+                {
+                    FirstName = data.FirstName,
+                    LastName = data.LastName,
+                    Gender = data.Gender,
+                    State = data.State,
+                    Birthdate = data.Birthdate,
+                    PrimaryPhone = data.PrimaryPhone,
+                    SecondaryPhone = data.SecondaryPhone
+                };
+
+                // save new lead
+                try
+                {
+                    using (LeadDbContext db = new LeadDbContext())
+                    {
+                        // add new lead object
+                        db.Leads.Add(lead);
+
+                        // commit changes to database
+                        db.SaveChanges();
+                    }
+                }
+                catch(Exception ex)
+                {
+                    return BadRequest("Invalid Request");
+                }
             }
             else
             {
